@@ -1,0 +1,6 @@
+.env
+Cargo.lock
+target
+debug
+.idea/
+.vscode/
