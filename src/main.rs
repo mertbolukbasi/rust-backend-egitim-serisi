@@ -3,6 +3,7 @@ use sea_orm::Database;
 use crate::config::config::AppConfig;
 
 mod config;
+mod models;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
