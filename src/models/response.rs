@@ -6,15 +6,15 @@ use chrono::{DateTime, Utc};
 use serde::Serialize;
 
 #[derive(Serialize, Debug)]
-pub struct ApiResponse {
+pub struct ApiResponse<T: Serialize> {
 	pub success: bool,
 	pub status_code: u16,
-	pub body: String,
+	pub body: T,
 	pub timestamp: DateTime<Utc>
 }
 
-impl ApiResponse {
-	pub fn success(status_code: u16, body: String) -> Self {
+impl<T: Serialize> ApiResponse<T> {
+	pub fn success(status_code: u16, body: T) -> Self {
 		ApiResponse {
 			success: true,
 			status_code,
@@ -22,7 +22,7 @@ impl ApiResponse {
 			timestamp: Utc::now()
 		}
 	}
-	pub fn error(status_code: u16, body: String) -> Self {
+	pub fn error(status_code: u16, body: T) -> Self {
 		ApiResponse {
 			success: false,
 			status_code,
@@ -32,7 +32,7 @@ impl ApiResponse {
 	}
 }
 
-impl Responder for ApiResponse {
+impl<T: Serialize> Responder for ApiResponse<T> {
 	type Body = BoxBody;
 
 	fn respond_to(self, req: &HttpRequest) -> HttpResponse<Self::Body> {
@@ -45,13 +45,13 @@ impl Responder for ApiResponse {
 	}
 }
 
-impl Display for ApiResponse {
+impl<T: Serialize> Display for ApiResponse<T> {
 	fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
 		write!(f, "{}", serde_json::to_string(&self).unwrap())
 	}
 }
 
-impl ResponseError for ApiResponse {
+impl ResponseError for ApiResponse<String> {
 	fn status_code(&self) -> StatusCode {
 		StatusCode::from_u16(self.status_code).unwrap_or(StatusCode::INTERNAL_SERVER_ERROR)
 	}
