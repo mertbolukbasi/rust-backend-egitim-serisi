@@ -1,5 +1,6 @@
 pub mod roles;
 pub mod projects;
+pub mod users;
 
 use actix_web::web;
 
@@ -8,5 +9,6 @@ pub fn routes_init(cfg: &mut web::ServiceConfig) {
 		web::scope("/api")
 			.configure(roles::roles_init)
 			.configure(projects::projects_init)
+			.configure(users::users_init)
 	);
 }
