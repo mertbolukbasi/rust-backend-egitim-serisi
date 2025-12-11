@@ -9,3 +9,10 @@ pub struct UserListDto {
     pub role_name: Vec<String>,
     pub project_name: String,
 }
+
+#[derive(Deserialize, Serialize, Clone)]
+pub struct TaskListDto {
+    pub task_name: String,
+    pub user: entity::user::Model,
+    pub project: entity::project::Model,
+}
