@@ -48,6 +48,11 @@ impl MigrationTrait for Migration {
 			                .not_null()
 			                .default(Expr::current_timestamp())
 	                )
+					.col(
+						ColumnDef::new(Task::DueTime)
+							.string()
+							.not_null(),
+					)
 	                .foreign_key(
 		                ForeignKey::create()
 			                .from(Task::Table, Task::ProjectId)
@@ -83,6 +88,7 @@ enum Task {
     IsActive,
 	ProjectId,
 	UserId,
+	DueTime,
 	CreatedAt,
 	UpdatedAt,
 }
